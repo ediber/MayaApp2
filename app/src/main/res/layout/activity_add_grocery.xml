@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.e.myapp2.AddGroceryActivity">
+
+    <FrameLayout
+        android:id="@+id/grocery_frame"
+        android:layout_width="397dp"
+        android:layout_height="637dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/grocery_constraintLayout2">
+
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/grocery_constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/grocery_add_contact_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="add_contact_button"
+            app:layout_constraintStart_toStartOf="@+id/grocery_name_edit"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_name_edit" />
+
+        <Button
+            android:id="@+id/grocery_camcel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="camcel"
+            app:layout_constraintStart_toStartOf="@+id/grocery_contact_name"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_contact_name" />
+
+        <Button
+            android:id="@+id/grocery_save_nutton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="save"
+            app:layout_constraintEnd_toEndOf="@+id/grocery_add_contact_button"
+            app:layout_constraintStart_toStartOf="@+id/grocery_add_contact_button"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_add_contact_button" />
+
+        <TextView
+            android:id="@+id/grocery_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="64dp"
+            android:text="grocery_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/grocery_contact_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:text="contact_name"
+            app:layout_constraintStart_toStartOf="@+id/grocery_add_contact_button"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_add_contact_button" />
+
+        <TextView
+            android:id="@+id/grocery_contact_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="contact_phone"
+            app:layout_constraintStart_toStartOf="@+id/grocery_contact_name"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_add_contact_button" />
+
+        <EditText
+            android:id="@+id/grocery_name_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="56dp"
+            android:ems="10"
+            android:hint="name"
+            android:inputType="textPersonName"
+            app:layout_constraintStart_toStartOf="@+id/grocery_name"
+            app:layout_constraintTop_toBottomOf="@+id/grocery_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
