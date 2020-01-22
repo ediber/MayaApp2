@@ -18,7 +18,7 @@ public class AddGroceryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grocery);
 
-        addContact = findViewById(R.id.grocery_add_contact_button);
+        addContact = findViewById(R.id.grocery_add_contact_button); //
 
         addContact.setOnClickListener(new View.OnClickListener() {
             @Override
