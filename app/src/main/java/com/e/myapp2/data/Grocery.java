@@ -1,4 +1,6 @@
-package com.e.myapp2;
+package com.e.myapp2.data;
+
+import com.e.myapp2.User;
 
 import java.util.List;
 

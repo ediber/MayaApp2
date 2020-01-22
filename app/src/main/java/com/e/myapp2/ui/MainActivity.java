@@ -1,4 +1,4 @@
-package com.e.myapp2;
+package com.e.myapp2.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,9 +10,10 @@ import android.view.View;
 import android.view.Window;
 
 
-import com.e.myapp2.GroceriesAdapter;
+import com.e.myapp2.adapters.GroceriesAdapter;
 import com.e.myapp2.ListDAO;
-import com.e.myapp2.NameIdPair;
+import com.e.myapp2.MyApplication;
+import com.e.myapp2.data.NameIdPair;
 import com.e.myapp2.R;
 
 import java.util.List;

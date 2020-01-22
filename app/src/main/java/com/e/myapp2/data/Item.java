@@ -1,4 +1,4 @@
-package com.e.myapp2;
+package com.e.myapp2.data;
 
 import android.graphics.Bitmap;
 

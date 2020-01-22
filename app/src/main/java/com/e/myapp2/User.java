@@ -1,6 +1,6 @@
 package com.e.myapp2;
 
-class User {
+public class User {
     private String phoneNumber;
     private  String password;
 

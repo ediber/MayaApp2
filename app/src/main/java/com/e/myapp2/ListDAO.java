@@ -3,6 +3,10 @@ package com.e.myapp2;
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.e.myapp2.data.Grocery;
+import com.e.myapp2.data.Item;
+import com.e.myapp2.data.NameIdPair;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,10 +19,10 @@ public class ListDAO {
     public ListDAO(Context context) {
 
         this.context = context;
-        generaterceries();
+        generateGroceries();
     }
 
-    private void generaterceries() {
+    private void generateGroceries() {
         groceries = new ArrayList<Grocery>();
 
         Grocery grocery0 = generateGrocery("grocry0");
@@ -54,7 +58,7 @@ public class ListDAO {
     }
 
     //מציאת כל הרשימות ששייכות למספר טלפון מסויים.
-   /* public list <list<com.e.myapp2.Item>> get_lists (String phoneNumber)
+   /* public list <list<com.e.myapp2.data.Item>> get_lists (String phoneNumber)
     {
         String number = phoneNumber;
        if( list.number_there())

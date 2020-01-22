@@ -1,4 +1,4 @@
-package com.e.myapp2;
+package com.e.myapp2.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
+import com.e.myapp2.data.Item;
+import com.e.myapp2.R;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
