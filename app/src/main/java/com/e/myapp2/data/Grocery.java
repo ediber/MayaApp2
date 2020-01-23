@@ -14,7 +14,6 @@ public class Grocery {
         this.name = name;
         this.users = users;
 
-//        this.id = System.currentTimeMillis();
         this.id = id;
 
     }

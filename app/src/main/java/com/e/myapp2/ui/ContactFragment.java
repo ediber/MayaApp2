@@ -32,14 +32,12 @@ public class ContactFragment extends Fragment {
     // The ListView
     private ListView lstNames;
 
-    // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private List<Contact> contacts;
     private RecyclerView recycler;
     private ContactAdapter adapter;
 
     public ContactFragment() {
-        // Required empty public constructor
     }
 
 
@@ -57,6 +55,7 @@ public class ContactFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         recycler = view.findViewById(R.id.contact_recycler);
+        //TODO contact fragment is "gone".
 
         contacts = new ArrayList<>();
        showContacts();
@@ -66,6 +65,7 @@ public class ContactFragment extends Fragment {
     }
 
     private void getContactList() {
+        // permission + achieving contact name and phone number.
         ContentResolver cr = getActivity().getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
@@ -101,6 +101,7 @@ public class ContactFragment extends Fragment {
         }
     }
 
+    // recyclerView and sort of the contacts by name (till second letter).
     private void buidAdapter() {
         Collections.sort(contacts);
 
@@ -113,14 +114,9 @@ public class ContactFragment extends Fragment {
         // Check the SDK version and whether the permission is already granted or not.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && getActivity().checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
-            // Android version is lesser than 6.0 or the permission is already granted.
-         //   List<String> contacts = getContactNames();
-       //     List<String> contacts = getContactNumbers();
+       //  list of contacts name and list of contacts phone number;
             getContactList();
-//            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
-//            lstNames.setAdapter(adapter);
         }
     }
 

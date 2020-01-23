@@ -22,6 +22,7 @@ public class ListDAO {
         generateGroceries();
     }
 
+    // create a list of groceries.
     private void generateGroceries() {
         groceries = new ArrayList<Grocery>();
 
@@ -36,6 +37,7 @@ public class ListDAO {
         groceries.add(grocery3);
     }
 
+    // create a list of items.
     private Grocery generateGrocery(String groceryName) {
         List<Item> items0 = new ArrayList<Item>();
         items0.add(new Item(groceryName + "," + "item0_0"));

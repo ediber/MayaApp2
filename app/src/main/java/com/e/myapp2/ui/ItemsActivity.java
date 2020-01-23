@@ -44,6 +44,7 @@ public class ItemsActivity extends AppCompatActivity {
         listDAO = new ListDAO(getApplicationContext());
         items = listDAO.getItems(id);
 
+        // recyclerView of al the items.
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_items);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

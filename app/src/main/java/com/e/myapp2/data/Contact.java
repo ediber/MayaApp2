@@ -26,6 +26,7 @@ public class Contact implements Comparable{
     }
 
     @Override
+    // a function to support the sorting of the contacts name list.
     public int compareTo(Object other) {
         String otherName = ((Contact)other).getName();
         String otherLetter = otherName.substring(0,2);
