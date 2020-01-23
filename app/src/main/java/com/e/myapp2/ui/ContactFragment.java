@@ -23,6 +23,7 @@ import com.e.myapp2.adapters.ContactAdapter;
 import com.e.myapp2.data.Contact;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -93,15 +94,16 @@ public class ContactFragment extends Fragment {
                     pCur.close();
                 }
             }
+            buidAdapter();
         }
         if(cur!=null){
             cur.close();
         }
-
-        buidAdapter();
     }
 
     private void buidAdapter() {
+        Collections.sort(contacts);
+
         adapter = new ContactAdapter(getContext(), contacts);
         recycler.setAdapter(adapter);
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));

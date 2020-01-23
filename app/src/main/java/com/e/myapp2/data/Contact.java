@@ -1,6 +1,6 @@
 package com.e.myapp2.data;
 
-public class Contact {
+public class Contact implements Comparable{
     private String name;
     private String phoneNumber;
 
@@ -23,5 +23,14 @@ public class Contact {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public int compareTo(Object other) {
+        String otherName = ((Contact)other).getName();
+        String otherLetter = otherName.substring(0,2);
+        String letter = name.substring(0,2);
+        int res = letter.compareTo(otherLetter);
+        return res;
     }
 }
