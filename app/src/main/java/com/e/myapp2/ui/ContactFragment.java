@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.e.myapp2.ContactsTask;
 import com.e.myapp2.R;
 import com.e.myapp2.adapters.ContactAdapter;
 import com.e.myapp2.data.Contact;
@@ -34,7 +35,6 @@ public class ContactFragment extends Fragment {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    private List<Contact> contacts;
     private RecyclerView recycler;
     private ContactAdapter adapter;
 
@@ -58,50 +58,14 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact, container, false);
         recycler = view.findViewById(R.id.contact_recycler);
 
-        contacts = new ArrayList<>();
        showContacts();
-
 
         return view;
     }
 
-    private void getContactList() {
-        ContentResolver cr = getActivity().getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
 
-        if ((cur != null ? cur.getCount() : 0) > 0) {
-            while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME));
 
-                if (cur.getInt(cur.getColumnIndex(
-                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        Log.i("contact", "Name: " + name);
-                        Log.i("contact", "Phone Number: " + phoneNo);
-                        contacts.add(new Contact(name, phoneNo));
-                    }
-                    pCur.close();
-                }
-            }
-            buidAdapter();
-        }
-        if(cur!=null){
-            cur.close();
-        }
-    }
-
-    private void buidAdapter() {
+    private void buidAdapter(List<Contact> contacts) {
         Collections.sort(contacts);
 
         adapter = new ContactAdapter(getContext(), contacts);
@@ -118,7 +82,12 @@ public class ContactFragment extends Fragment {
             // Android version is lesser than 6.0 or the permission is already granted.
          //   List<String> contacts = getContactNames();
        //     List<String> contacts = getContactNumbers();
-            getContactList();
+            new ContactsTask(getContext(), new ContactsTask.TasklListener() {
+                @Override
+                public void onContactsReady(List<Contact> contacts) {
+                    buidAdapter(contacts);
+                }
+            }).execute();
 //            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, contacts);
 //            lstNames.setAdapter(adapter);
         }

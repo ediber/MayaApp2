@@ -26,12 +26,13 @@ public class AddGroceryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                  contactFragment = new ContactFragment().newInstance();
-                FragmentManager manager = getSupportFragmentManager();
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
                 transaction.add(R.id.grocery_frame, contactFragment);
                 transaction.commit();
 
                 findViewById(R.id.grocery_constraintLayout2).setVisibility(View.GONE);
+                findViewById(R.id.grocery_frame).setVisibility(View.VISIBLE);
+
             }
         });
     }
