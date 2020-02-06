@@ -11,7 +11,7 @@ import android.view.Window;
 
 
 import com.e.myapp2.adapters.GroceriesAdapter;
-import com.e.myapp2.data.ListDAO;
+import com.e.myapp2.data.DAO;
 import com.e.myapp2.MyApplication;
 import com.e.myapp2.data.NameIdPair;
 import com.e.myapp2.R;
@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager layoutManager;
-    private ListDAO listDao;
+    private DAO dao;
     private List<NameIdPair> groceries;
     private GroceriesAdapter adapter;
     private View addGrocery;
@@ -36,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         addGrocery =  findViewById(R.id.add_grocery_button);
 
-        listDao = new ListDAO(getApplicationContext());
-        groceries = listDao.getGroceryPairs();
+        dao = DAO.getInstance(getApplicationContext());
+        groceries = dao.getGroceryPairs();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_grocery);
         recyclerView.setHasFixedSize(true);

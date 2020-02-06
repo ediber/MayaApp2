@@ -12,16 +12,27 @@ import com.e.myapp2.data.NameIdPair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListDAO {
+public class DAO {
 
     private ArrayList<Grocery> groceries;
     private Context context;
     private long groceryId = 0;
 
-    public ListDAO(Context context) {
+    // static variable single_instance of type Singleton
+    private static DAO single_instance = null;
 
+    private DAO(Context context) {
         this.context = context;
         generateGroceries();
+    }
+
+    // static method to create instance of Singleton class
+    public static DAO getInstance(Context context)
+    {
+        if (single_instance == null)
+            single_instance = new DAO(context);
+
+        return single_instance;
     }
 
     private void generateGroceries() {
