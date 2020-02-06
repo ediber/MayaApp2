@@ -3,10 +3,19 @@ package com.e.myapp2.data;
 public class Contact implements Comparable{
     private String name;
     private String phoneNumber;
+    private boolean isSelected;
 
     public Contact(String name, String phoneNumber) {
         this.name = name;
         this.phoneNumber = phoneNumber;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public String getName() {
