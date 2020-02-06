@@ -1,8 +1,10 @@
-package com.e.myapp2;
+package com.e.myapp2.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.e.myapp2.MyApplication;
+import com.e.myapp2.User;
 import com.e.myapp2.data.Grocery;
 import com.e.myapp2.data.Item;
 import com.e.myapp2.data.NameIdPair;

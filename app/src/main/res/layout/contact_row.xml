@@ -3,10 +3,18 @@
     android:layout_width="match_parent"
     android:id="@+id/contact_row_parent"
     android:layout_height="wrap_content"
-    android:background="#E91717">
+    >
 
     <TextView
         android:id="@+id/contact_row_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="nameaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        android:textDirection="rtl" />
+
+    <TextView
+        android:id="@+id/contact_row_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"

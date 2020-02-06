@@ -1,9 +1,7 @@
 package com.e.myapp2.ui;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -11,8 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,6 +81,12 @@ public class ContactFragment extends Fragment {
             new ContactsTask(getContext(), new ContactsTask.TasklListener() {
                 @Override
                 public void onContactsReady(List<Contact> contacts) {
+                    contacts = removeSmallNumbers(contacts);   // <10
+                    removeUneceserrySymbols(contacts);
+                    fixFormat(contacts); // +972 -> 0
+                    contacts = removeSmallNumbers(contacts);   // <10
+                    contacts = removeNot05(contacts);
+                    contacts = removeDuplicates(contacts);
                     buidAdapter(contacts);
                 }
             }).execute();
@@ -93,9 +95,74 @@ public class ContactFragment extends Fragment {
         }
     }
 
+    private List<Contact> removeNot05(List<Contact> contacts) {
+        List<Contact> tmp = new ArrayList<>();
+        for (Contact contact : contacts) {
+            if(contact.getPhoneNumber().substring(0,2).equals("05")){
+                tmp.add(contact);
+            }
+        }
+        return tmp;
+    }
 
+    private void removeUneceserrySymbols(List<Contact> contacts) {
+        String phone;
+        for (Contact contact : contacts) {
+            phone = contact.getPhoneNumber();
+            phone = phone.replaceAll(" ","");
+            phone = phone.replaceAll("\\(","");
+            phone = phone.replaceAll("\\)","");
+            phone = phone.replaceAll("-","");
+            phone = phone.replaceAll("\\+","");
+            contact.setPhoneNumber(phone);
+        }
+    }
 
+    private List<Contact> removeSmallNumbers(List<Contact> contacts) {
+        List<Contact> tmp = new ArrayList<>();
+        for (Contact contact : contacts) {
+            if(contact.getPhoneNumber().length() >= 10){
+                tmp.add(contact);
+            }
+        }
+        return tmp;
+    }
 
+    private void fixFormat(List<Contact> contacts) {
+        for (Contact contact : contacts) {
+            // +972
+            String phone = contact.getPhoneNumber();
+            if(phone.length() > 0 && phone.substring(0,1).equals("9")){
+                phone = "0" + phone.substring(3);
+            }
+            contact.setPhoneNumber(phone);
+        }
+    }
+
+    private List<Contact> removeDuplicates(List<Contact> contacts) {
+        // Create a new ArrayList
+        ArrayList<Contact> newList = new ArrayList<>();
+
+        // Traverse through the first list
+        for (Contact contact : contacts) {
+
+            // If this element is not present in newList
+            // then add it
+            if (! phoneExist(newList, contact)) {
+                newList.add(contact);
+            }
+        }
+        return newList;
+    }
+
+    private boolean phoneExist(ArrayList<Contact> newList, Contact contact) {
+        for (Contact newCont: newList) {
+            if(newCont.getPhoneNumber().equals(contact.getPhoneNumber())){
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }

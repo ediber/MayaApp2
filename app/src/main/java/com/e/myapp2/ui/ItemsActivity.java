@@ -12,7 +12,7 @@ import android.view.Window;
 
 import com.e.myapp2.data.Item;
 import com.e.myapp2.adapters.ItemAdapter;
-import com.e.myapp2.ListDAO;
+import com.e.myapp2.data.ListDAO;
 import com.e.myapp2.R;
 
 import java.util.List;

@@ -41,6 +41,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         final Contact contact = contacts.get(position);
         ((MyViewHolder)holder).nameText.setText(contact.getName());
+        ((MyViewHolder)holder).numberText.setText(contact.getPhoneNumber());
         final View parent = ((MyViewHolder) holder).parent;
         parent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +76,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView numberText;
         public View parent;
         public TextView nameText;
 
@@ -82,6 +84,7 @@ public class ContactAdapter extends RecyclerView.Adapter {
             super(view);
             nameText = view.findViewById(R.id.contact_row_name);
             parent = view.findViewById(R.id.contact_row_parent);
+            numberText = view.findViewById(R.id.contact_row_number);
         }
     }
 
