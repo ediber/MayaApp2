@@ -18,7 +18,7 @@ import java.util.List;
 public class GroceriesAdapter extends RecyclerView.Adapter<GroceriesAdapter.MyViewHolder> {
 
     public interface GroceryListener{
-        void onGroceryClicked(long id);
+        void onGroceryClicked(String id);
     }
 
     private List<NameIdPair> groceries;

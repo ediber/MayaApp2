@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new GroceriesAdapter(groceries, new GroceriesAdapter.GroceryListener() {
             @Override
-            public void onGroceryClicked(long id) {
+            public void onGroceryClicked(String id) {
                 Intent myIntent = new Intent(MainActivity.this, ItemsActivity.class);
                 myIntent.putExtra("grocery_id", id); //Optional parameters
                 startActivity(myIntent);
@@ -65,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MyApplication myApplication = (MyApplication) getApplication();
-        myPhoneNumber = myApplication.getMyPhoneNumber();
 
     }
 }

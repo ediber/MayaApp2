@@ -22,6 +22,24 @@
             android:background="#4CAF50"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/contact_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="96dp"
+            android:text="ok"
+            app:layout_constraintStart_toStartOf="@+id/contact_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/contact_recycler" />
+
+        <Button
+            android:id="@+id/contact_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="88dp"
+            android:text="cancel"
+            app:layout_constraintStart_toEndOf="@+id/contact_ok"
+            app:layout_constraintTop_toTopOf="@+id/contact_ok" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

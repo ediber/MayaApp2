@@ -1,29 +1,10 @@
 package com.e.myapp2.data;
 
-public class Contact implements Comparable{
-    private String name;
+public class Contact {
     private String phoneNumber;
-    private boolean isSelected;
 
-    public Contact(String name, String phoneNumber) {
-        this.name = name;
+    public Contact(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public boolean isSelected() {
-        return isSelected;
-    }
-
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPhoneNumber() {
@@ -32,14 +13,5 @@ public class Contact implements Comparable{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public int compareTo(Object other) {
-        String otherName = ((Contact)other).getName();
-        String otherLetter = otherName.substring(0,2);
-        String letter = name.substring(0,2);
-        int res = letter.compareTo(otherLetter);
-        return res;
     }
 }

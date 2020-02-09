@@ -42,7 +42,7 @@ public class ItemsActivity extends AppCompatActivity {
 
 
         DAO = DAO.getInstance(getApplicationContext());
-        items = DAO.getItems(id);
+        items = DAO.getItems(id + "");
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_items);
         recyclerView.setHasFixedSize(true);
