@@ -1,8 +1,10 @@
-package com.e.myapp2;
+package com.e.myapp2.data;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 
+import com.e.myapp2.MyApplication;
+import com.e.myapp2.User;
 import com.e.myapp2.data.Grocery;
 import com.e.myapp2.data.Item;
 import com.e.myapp2.data.NameIdPair;
@@ -10,19 +12,29 @@ import com.e.myapp2.data.NameIdPair;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListDAO {
+public class DAO {
 
     private ArrayList<Grocery> groceries;
     private Context context;
     private long groceryId = 0;
 
-    public ListDAO(Context context) {
+    // static variable single_instance of type Singleton
+    private static DAO single_instance = null;
 
+    private DAO(Context context) {
         this.context = context;
         generateGroceries();
     }
 
-    // create a list of groceries.
+    // static method to create instance of Singleton class
+    public static DAO getInstance(Context context)
+    {
+        if (single_instance == null)
+            single_instance = new DAO(context);
+
+        return single_instance;
+    }
+
     private void generateGroceries() {
         groceries = new ArrayList<Grocery>();
 
@@ -37,7 +49,6 @@ public class ListDAO {
         groceries.add(grocery3);
     }
 
-    // create a list of items.
     private Grocery generateGrocery(String groceryName) {
         List<Item> items0 = new ArrayList<Item>();
         items0.add(new Item(groceryName + "," + "item0_0"));
