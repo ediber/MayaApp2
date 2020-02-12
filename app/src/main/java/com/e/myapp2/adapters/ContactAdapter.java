@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.e.myapp2.R;
-import com.e.myapp2.data.Contact;
-import com.e.myapp2.data.NameIdPair;
+import com.e.myapp2.data.LocalContact;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -19,11 +19,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class ContactAdapter extends RecyclerView.Adapter {
 
-    private List<Contact> contacts;
+    private List<LocalContact> localContacts;
 
 
-    public ContactAdapter(Context context, List<Contact> contacts) {
-        this.contacts = contacts;
+    public ContactAdapter(Context context, List<LocalContact> localContacts) {
+        this.localContacts = localContacts;
     }
 
     @NonNull
@@ -39,40 +39,55 @@ public class ContactAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        final Contact contact = contacts.get(position);
-        ((MyViewHolder)holder).nameText.setText(contact.getName());
-        ((MyViewHolder)holder).numberText.setText(contact.getPhoneNumber());
+        final LocalContact localContact = localContacts.get(position);
+        ((MyViewHolder)holder).nameText.setText(localContact.getName());
+        ((MyViewHolder)holder).numberText.setText(localContact.getPhoneNumber());
         final View parent = ((MyViewHolder) holder).parent;
+        if(localContact.isSelected()){
+            parent.setBackgroundColor(Color.YELLOW);
+        } else {
+            parent.setBackgroundColor(Color.TRANSPARENT);
+        }
         parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                click(contact, parent);
+                click(localContact, parent);
             }
         });
 
         ((MyViewHolder)holder).nameText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                click(contact, parent);
+                click(localContact, parent);
             }
         });
 
     }
 
-    private void click(Contact contact, View parent) {
-        if(! contact.isSelected()){
-            contact.setSelected(true);
+    private void click(LocalContact localContact, View parent) {
+        if(! localContact.isSelected()){
+            localContact.setSelected(true);
             parent.setBackgroundColor(Color.YELLOW);
         } else {
-            contact.setSelected(false);
+            localContact.setSelected(false);
             parent.setBackgroundColor(Color.TRANSPARENT);
         }
     }
 
     @Override
     public int getItemCount() {
-        Log.d("contact adapter - size", contacts.size()+"");
-        return contacts.size();
+        Log.d("contact adapter - size", localContacts.size()+"");
+        return localContacts.size();
+    }
+
+    public List<LocalContact> getSelectedContacts() {
+        List<LocalContact> selected = new ArrayList<>();
+        for (LocalContact localContact : localContacts) {
+            if(localContact.isSelected()){
+                selected.add(localContact);
+            }
+        }
+        return selected;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -89,6 +104,6 @@ public class ContactAdapter extends RecyclerView.Adapter {
     }
 
     public interface AdapterListener{
-        void onSave(List<Contact> selected);
+        void onSave(List<LocalContact> selected);
     }
 }

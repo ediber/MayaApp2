@@ -3,27 +3,26 @@ package com.e.myapp2.data;
 import android.content.Context;
 import android.graphics.Bitmap;
 
-import com.e.myapp2.MyApplication;
-import com.e.myapp2.User;
-import com.e.myapp2.data.Grocery;
-import com.e.myapp2.data.Item;
-import com.e.myapp2.data.NameIdPair;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class DAO {
 
+    private Container container;
     private ArrayList<Grocery> groceries;
     private Context context;
     private long groceryId = 0;
+    private Contact myContact;
 
     // static variable single_instance of type Singleton
     private static DAO single_instance = null;
 
     private DAO(Context context) {
         this.context = context;
-        generateGroceries();
+        myContact = new Contact("0548426419");
+        groceries = new ArrayList<>();
+        container = new Container();
+ //       generateGroceries();
     }
 
     // static method to create instance of Singleton class
@@ -35,7 +34,8 @@ public class DAO {
         return single_instance;
     }
 
-    private void generateGroceries() {
+
+/*    private void generateGroceries() {
         groceries = new ArrayList<Grocery>();
 
         Grocery grocery0 = generateGrocery("grocry0");
@@ -47,17 +47,14 @@ public class DAO {
         groceries.add(grocery1);
         groceries.add(grocery2);
         groceries.add(grocery3);
-    }
+    }*/
 
-    private Grocery generateGrocery(String groceryName) {
+/*    private Grocery generateGrocery(String groceryName) {
         List<Item> items0 = new ArrayList<Item>();
         items0.add(new Item(groceryName + "," + "item0_0"));
         items0.add(new Item(groceryName + "," + "item0_1"));
         items0.add(new Item(groceryName + "," + "item2"));
         items0.add(new Item(groceryName + "," + "item3"));
-
-        MyApplication myApplication = (MyApplication) context.getApplicationContext();
-        String myPhoneNumber = myApplication.getMyPhoneNumber();
 
 
         User user0 = new User(myPhoneNumber, "pass0");
@@ -68,7 +65,7 @@ public class DAO {
         Grocery grocery0 = new Grocery(groceryName, users0, groceryId);
         grocery0.setItems(items0);
         return grocery0;
-    }
+    }*/
 
     //מציאת כל הרשימות ששייכות למספר טלפון מסויים.
    /* public list <list<com.e.myapp2.data.Item>> get_lists (String phoneNumber)
@@ -91,9 +88,9 @@ public class DAO {
     }
 
     // print all items of a specific list
-    public List<Item> getItems(long id) {
+    public List<Item> getItems(String id) {
         for (Grocery grocery: groceries) {
-            if(grocery.getId()==id){
+            if(grocery.getId().equals(id)){
                return grocery.getItems();
             }
         }
@@ -101,8 +98,43 @@ public class DAO {
     }
 
     // add a new shopping list
-    public void addGocery(String name, List<User> users) {
+    public void addGrocery(String groceryName, List<LocalContact> localContacts) {
+        List<Contact> contacts = localToGeneral(localContacts);
+        Grocery grocery = new Grocery(groceryName);
+        contacts.add(myContact);
+        List<Contact> dBContacts = container.getContacts();
+        insetIfNotExist(dBContacts, contacts);
+        container.setContacts(dBContacts);
+        container.addGrocery(grocery);
+        addGroceryContact(contacts, grocery);
+    }
 
+    private List<Contact> localToGeneral(List<LocalContact> localContacts) {
+        List<Contact> generals = new ArrayList<>();
+        for (Contact local : localContacts) {
+            generals.add(local);
+        }
+        return generals;
+    }
+
+    private void insetIfNotExist(List<Contact> dBContacts, List<Contact> contacts) {
+        for (Contact newContact : contacts) {
+            boolean exist = false;
+            for (Contact dbContact : dBContacts) {
+                if(dbContact.getPhoneNumber().equals(newContact.getPhoneNumber())){
+                    exist = true;
+                }
+            }
+            if(exist){
+                dBContacts.add(newContact);
+            }
+        }
+    }
+
+    private void addGroceryContact(List<Contact> contacts, Grocery grocery) {
+        for (Contact contact : contacts) {
+            container.addGroceryContact(grocery.getId(), contact.getPhoneNumber());
+        }
     }
 
     //add an item to a specific list

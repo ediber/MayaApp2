@@ -7,7 +7,7 @@ import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import com.e.myapp2.data.Contact;
+import com.e.myapp2.data.LocalContact;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,13 +15,13 @@ import java.util.List;
 public class ContactsTask extends AsyncTask<String, String, String> {
 
     private Context context;
-    private List<Contact> contacts;
+    private List<LocalContact> localContacts;
     private TasklListener listener;
 
     public ContactsTask(Context context, TasklListener listener) {
         this.context = context;
         this.listener = listener;
-        contacts = new ArrayList<>();
+        localContacts = new ArrayList<>();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ContactsTask extends AsyncTask<String, String, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        listener.onContactsReady(contacts);
+        listener.onContactsReady(localContacts);
     }
 
     private void getContactList() {
@@ -62,7 +62,7 @@ public class ContactsTask extends AsyncTask<String, String, String> {
                                 ContactsContract.CommonDataKinds.Phone.NUMBER));
                         Log.i("contact", "Name: " + name);
                         Log.i("contact", "Phone Number: " + phoneNo);
-                        contacts.add(new Contact(name, phoneNo));
+                        localContacts.add(new LocalContact(name, phoneNo));
                     }
                     pCur.close();
                 }
@@ -74,6 +74,6 @@ public class ContactsTask extends AsyncTask<String, String, String> {
     }
 
     public interface TasklListener{
-        void onContactsReady(List<Contact> contacts);
+        void onContactsReady(List<LocalContact> localContacts);
     }
 }

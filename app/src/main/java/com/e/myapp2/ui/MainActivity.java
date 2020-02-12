@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         dao = DAO.getInstance(getApplicationContext());
         groceries = dao.getGroceryPairs();
 
-        // recyclerView of al the groceries.
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_grocery);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -47,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new GroceriesAdapter(groceries, new GroceriesAdapter.GroceryListener() {
             @Override
-            public void onGroceryClicked(long id) {
-
-                // intent from the chosen grocery to recyclerView of it's items.
+            public void onGroceryClicked(String id) {
                 Intent myIntent = new Intent(MainActivity.this, ItemsActivity.class);
-                myIntent.putExtra("grocery_id", id);
+                myIntent.putExtra("grocery_id", id); //Optional parameters
                 startActivity(myIntent);
             }
         });
@@ -59,17 +56,15 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(adapter);
 
-        //add grocery button.
         addGrocery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent myIntent = new Intent(MainActivity.this, AddGroceryActivity.class);
+//                myIntent.putExtra("key", value); //Optional parameters
                 startActivity(myIntent);
             }
         });
 
-        MyApplication myApplication = (MyApplication) getApplication();
-        myPhoneNumber = myApplication.getMyPhoneNumber();
 
     }
 }

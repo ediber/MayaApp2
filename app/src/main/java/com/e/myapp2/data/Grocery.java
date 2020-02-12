@@ -1,20 +1,21 @@
 package com.e.myapp2.data;
 
-import com.e.myapp2.User;
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Grocery {
    private List<Item> items;
    private String name;
-   private List<User> users;
-   private long id;
+ //  private List<User> users;
+   private String id;
 
-    public Grocery( String name, List<User> users, long id) {
+    public Grocery( String name) {
         this.name = name;
-        this.users = users;
+   //     this.users = users;
 
-        this.id = id;
+        this.id  = (long) (Math.random() * Long.MAX_VALUE + 1) + "";
+        items = new ArrayList<>();
 
     }
 
@@ -34,19 +35,12 @@ public class Grocery {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
-
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 }

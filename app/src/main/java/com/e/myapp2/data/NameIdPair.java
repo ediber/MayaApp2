@@ -2,9 +2,9 @@ package com.e.myapp2.data;
 
 public class NameIdPair {
     private  String name;
-    private  long id;
+    private  String id;
 
-    public NameIdPair(String name, long id) {
+    public NameIdPair(String name, String id) {
         this.name = name;
         this.id = id;
     }
@@ -17,7 +17,7 @@ public class NameIdPair {
         this.name = name;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
