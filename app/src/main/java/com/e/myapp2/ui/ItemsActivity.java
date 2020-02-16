@@ -27,7 +27,7 @@ public class ItemsActivity extends AppCompatActivity {
     private Object items;
     private ItemAdapter adapter;
     private List<Item> itemList;
-    private long id;
+    private String groceryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +37,14 @@ public class ItemsActivity extends AppCompatActivity {
 
         addItem =  findViewById(R.id.add_item_button);
 
-        Intent intent = getIntent();
-        id = intent.getLongExtra("grocery_id", -1);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras !=null) {
+            groceryId = extras.getString("grocery_id");
+        }
 
         DAO = DAO.getInstance(getApplicationContext());
-        items = DAO.getItems(id + "");
+        items = DAO.getItems(groceryId + "");
 
         // recyclerView of al the items.
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_items);
@@ -50,8 +52,30 @@ public class ItemsActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ItemAdapter((List<Item>) items);
+        adapter = new ItemAdapter((List<Item>) items, new ItemAdapter.AdapterListener() {
+            @Override
+            public void onClick(String itemId) {
+                Intent intent = new Intent(ItemsActivity.this, ItemDetailsActivity.class);
+                intent.putExtra("grocery_id", groceryId);
+                intent.putExtra("item_id", itemId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick() {
+
+            }
+        });
         recyclerView.setAdapter(adapter);
+
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemsActivity.this, AddItemActivity.class);
+                intent.putExtra("grocery_id", groceryId);
+                startActivity(intent);
+            }
+        });
     }
 
     // TODO addItem

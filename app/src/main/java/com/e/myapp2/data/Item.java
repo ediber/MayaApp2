@@ -3,13 +3,16 @@ package com.e.myapp2.data;
 import android.graphics.Bitmap;
 
 public class Item {
+    String id;
     String name;
     String description;
     Bitmap photo;
     boolean isStrikethrough;
 
-    public Item(String name){
-        this.name=name;
+    public Item(String name, String description) {
+        this.name = name;
+        this.description = description;
+        this.id  = (long) (Math.random() * Long.MAX_VALUE + 1) + "";
     }
 
     public String getName() {
@@ -42,5 +45,13 @@ public class Item {
 
     public void setStrikethrough(boolean strikethrough) {
         isStrikethrough = strikethrough;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
