@@ -20,9 +20,7 @@ public class DAO {
     private DAO(Context context) {
         this.context = context;
         myContact = new Contact("0548426419");
- //       groceries = new ArrayList<>();
         container = new Container();
- //       generateGroceries();
     }
 
     // static method to create instance of Singleton class
@@ -34,49 +32,7 @@ public class DAO {
         return single_instance;
     }
 
-
-/*    private void generateGroceries() {
-        groceries = new ArrayList<Grocery>();
-
-        Grocery grocery0 = generateGrocery("grocry0");
-        Grocery grocery1 = generateGrocery("grocry1");
-        Grocery grocery2 = generateGrocery("grocry2");
-        Grocery grocery3 = generateGrocery("grocry3");
-
-        groceries.add(grocery0);
-        groceries.add(grocery1);
-        groceries.add(grocery2);
-        groceries.add(grocery3);
-    }*/
-
-/*    private Grocery generateGrocery(String groceryName) {
-        List<Item> items0 = new ArrayList<Item>();
-        items0.add(new Item(groceryName + "," + "item0_0"));
-        items0.add(new Item(groceryName + "," + "item0_1"));
-        items0.add(new Item(groceryName + "," + "item2"));
-        items0.add(new Item(groceryName + "," + "item3"));
-
-
-        User user0 = new User(myPhoneNumber, "pass0");
-        List<User> users0 = new ArrayList<>();
-        users0.add(user0);
-
-        groceryId ++;
-        Grocery grocery0 = new Grocery(groceryName, users0, groceryId);
-        grocery0.setItems(items0);
-        return grocery0;
-    }*/
-
-    //מציאת כל הרשימות ששייכות למספר טלפון מסויים.
-   /* public list <list<com.e.myapp2.data.Item>> get_lists (String phoneNumber)
-    {
-        String number = phoneNumber;
-       if( list.number_there())
-       {
-           list_pointer=list<item>;
-       }
-    }*/
-
+// creat only once dao object using singleton design patern.
     //return the grocery list name
     public List<NameIdPair> getGroceryPairs() {
         List<Grocery> myUserGroceries = getMyUserGroceries();
@@ -89,6 +45,7 @@ public class DAO {
         return pairs;
     }
 
+ // find which grociries belongs to my user.
     private List<Grocery> getMyUserGroceries() {
         List<Grocery> groceries = container.getGroceries();
         List<Grocery> myUserGroceries = new ArrayList<>();
@@ -100,6 +57,7 @@ public class DAO {
         return myUserGroceries;
     }
 
+    // find if a specific grosiry belong to my user
     private boolean belongsToUser(Contact myContact, Grocery grocery) {
         List<Grocery_Contact> grocery_contacts = container.getGrocery_contact();
         for (Grocery_Contact grocery_contact : grocery_contacts) {
@@ -112,7 +70,7 @@ public class DAO {
     }
 
 
-    // print all items of a specific list
+    // return all items of a specific list
     public List<Item> getItems(String id) {
         List<Grocery> myUserGroceries = getMyUserGroceries();
         for (Grocery grocery: myUserGroceries) {
@@ -135,6 +93,7 @@ public class DAO {
         addGroceryContact(contacts, grocery);
     }
 
+     // change a local contact to contact.
     private List<Contact> localToGeneral(List<LocalContact> localContacts) {
         List<Contact> generals = new ArrayList<>();
         for (Contact local : localContacts) {
@@ -143,6 +102,8 @@ public class DAO {
         return generals;
     }
 
+
+     //adding a user to dbContact if not exist.
     private void insetIfNotExist(List<Contact> dBContacts, List<Contact> contacts) {
         for (Contact newContact : contacts) {
             boolean exist = false;
@@ -157,6 +118,7 @@ public class DAO {
         }
     }
 
+    // insert to Grocery_Contact list.
     private void addGroceryContact(List<Contact> contacts, Grocery grocery) {
         for (Contact contact : contacts) {
             container.addGroceryContact(grocery.getId(), contact.getPhoneNumber());
@@ -176,12 +138,15 @@ public class DAO {
 
     // display item as strikethrough
     public void strikthroughItem() {
+        //todo
     }
 
     // delete item from a list
     public void deleteItem() {
+        //todo
     }
 
+    // get item by groceries id and item id, used for item's detiels.
     public Item getItem(String groceryId, String itemId) {
         List<Grocery> groceries = container.getGroceries();
         for (Grocery grocery : groceries) {

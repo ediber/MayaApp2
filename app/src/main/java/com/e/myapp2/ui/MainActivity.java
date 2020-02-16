@@ -12,7 +12,6 @@ import android.view.Window;
 
 import com.e.myapp2.adapters.GroceriesAdapter;
 import com.e.myapp2.data.DAO;
-import com.e.myapp2.MyApplication;
 import com.e.myapp2.data.NameIdPair;
 import com.e.myapp2.R;
 
