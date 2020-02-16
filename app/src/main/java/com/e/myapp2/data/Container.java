@@ -1,11 +1,18 @@
 package com.e.myapp2.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Container {
     private List<Contact> contacts;
     private List<Grocery> groceries;
     private List<Grocery_Contact> grocery_contact;
+
+    public Container() {
+        contacts = new ArrayList<>();
+        groceries = new ArrayList<>();
+        grocery_contact = new ArrayList<>();
+    }
 
     public List<Contact> getContacts() {
         return contacts;

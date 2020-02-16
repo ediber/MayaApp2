@@ -9,7 +9,7 @@ import java.util.List;
 public class DAO {
 
     private Container container;
-    private ArrayList<Grocery> groceries;
+  //  private ArrayList<Grocery> groceries;
     private Context context;
     private long groceryId = 0;
     private Contact myContact;
@@ -20,7 +20,7 @@ public class DAO {
     private DAO(Context context) {
         this.context = context;
         myContact = new Contact("0548426419");
-        groceries = new ArrayList<>();
+ //       groceries = new ArrayList<>();
         container = new Container();
  //       generateGroceries();
     }
@@ -79,17 +79,43 @@ public class DAO {
 
     //return the grocery list name
     public List<NameIdPair> getGroceryPairs() {
+        List<Grocery> myUserGroceries = getMyUserGroceries();
+
         List<NameIdPair> pairs = new ArrayList<>();
-        for (Grocery grocery : groceries) {
+        for (Grocery grocery : myUserGroceries) {
             pairs.add(new NameIdPair(grocery.getName(),grocery.getId()));
         }
 
         return pairs;
     }
 
+    private List<Grocery> getMyUserGroceries() {
+        List<Grocery> groceries = container.getGroceries();
+        List<Grocery> myUserGroceries = new ArrayList<>();
+        for (Grocery grocery : groceries) {
+            if(belongsToUser(myContact, grocery)){
+                myUserGroceries.add(grocery);
+            }
+        }
+        return myUserGroceries;
+    }
+
+    private boolean belongsToUser(Contact myContact, Grocery grocery) {
+        List<Grocery_Contact> grocery_contacts = container.getGrocery_contact();
+        for (Grocery_Contact grocery_contact : grocery_contacts) {
+            if(grocery_contact.getGroceryId().equals(grocery.getId()) &&
+                    grocery_contact.getContactPhone().equals(myContact.getPhoneNumber())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     // print all items of a specific list
     public List<Item> getItems(String id) {
-        for (Grocery grocery: groceries) {
+        List<Grocery> myUserGroceries = getMyUserGroceries();
+        for (Grocery grocery: myUserGroceries) {
             if(grocery.getId().equals(id)){
                return grocery.getItems();
             }
@@ -138,8 +164,14 @@ public class DAO {
     }
 
     //add an item to a specific list
-    public void addItem(String name, String description, Bitmap photo) {
-
+    public void addItem(String name, String description, Bitmap photo, String groceryId) {
+        List<Grocery> groceries = container.getGroceries();
+        Item item = new Item(name, description);
+        for (Grocery grocery : groceries) {
+            if(grocery.getId().equals(groceryId)){
+                grocery.getItems().add(item);
+            }
+        }
     }
 
     // display item as strikethrough
@@ -148,5 +180,20 @@ public class DAO {
 
     // delete item from a list
     public void deleteItem() {
+    }
+
+    public Item getItem(String groceryId, String itemId) {
+        List<Grocery> groceries = container.getGroceries();
+        for (Grocery grocery : groceries) {
+            if(grocery.getId().equals(groceryId)){
+                List<Item> items = grocery.getItems();
+                for (Item item : items) {
+                    if(item.getId().equals(itemId)){
+                        return item;
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
