@@ -23,6 +23,7 @@ public class DAO {
         container = new Container();
     }
 
+    // create only once dao object using singleton design pattern.
     // static method to create instance of Singleton class
     public static DAO getInstance(Context context)
     {
@@ -32,7 +33,7 @@ public class DAO {
         return single_instance;
     }
 
-// creat only once dao object using singleton design patern.
+
     //return the grocery list name
     public List<NameIdPair> getGroceryPairs() {
         List<Grocery> myUserGroceries = getMyUserGroceries();
@@ -45,7 +46,7 @@ public class DAO {
         return pairs;
     }
 
- // find which grociries belongs to my user.
+ // find which groceries belongs to my user.
     private List<Grocery> getMyUserGroceries() {
         List<Grocery> groceries = container.getGroceries();
         List<Grocery> myUserGroceries = new ArrayList<>();
@@ -57,7 +58,7 @@ public class DAO {
         return myUserGroceries;
     }
 
-    // find if a specific grosiry belong to my user
+    // find if a specific grocery belong to my user
     private boolean belongsToUser(Contact myContact, Grocery grocery) {
         List<Grocery_Contact> grocery_contacts = container.getGrocery_contact();
         for (Grocery_Contact grocery_contact : grocery_contacts) {
@@ -146,7 +147,7 @@ public class DAO {
         //todo
     }
 
-    // get item by groceries id and item id, used for item's detiels.
+    // get item by groceries id and item id, used for item's details.
     public Item getItem(String groceryId, String itemId) {
         List<Grocery> groceries = container.getGroceries();
         for (Grocery grocery : groceries) {

@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGroceryClicked(String id) {
                 Intent myIntent = new Intent(MainActivity.this, ItemsActivity.class);
-                myIntent.putExtra("grocery_id", id); //Optional parameters
+                myIntent.putExtra("grocery_id", id);
                 startActivity(myIntent);
             }
         });
