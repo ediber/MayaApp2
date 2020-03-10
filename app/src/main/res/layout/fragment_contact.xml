@@ -16,7 +16,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contact_recycler"
             android:layout_width="300dp"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:layout_marginStart="52dp"
             android:layout_marginTop="104dp"
             android:background="#4CAF50"

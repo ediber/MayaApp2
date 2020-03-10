@@ -24,7 +24,6 @@ public class ItemsActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private View addItem;
     private DAO DAO;
-    private Object items;
     private ItemAdapter adapter;
     private List<Item> itemList;
     private String groceryId;
@@ -44,15 +43,31 @@ public class ItemsActivity extends AppCompatActivity {
         }
 
         DAO = DAO.getInstance(getApplicationContext());
-        items = DAO.getItems(groceryId + "");
+        DAO.getItems(groceryId + "", new DAO.HasItemsListener() {
+            @Override
+            public void hasItems(List<Item> items) {
+                generateRecyclerView(items);
+            }
+        });
 
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ItemsActivity.this, AddItemActivity.class);
+                intent.putExtra("grocery_id", groceryId);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void generateRecyclerView(List<Item> items) {
         // recyclerView of al the items.
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view_items);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ItemAdapter((List<Item>) items, new ItemAdapter.AdapterListener() {
+        adapter = new ItemAdapter(items, new ItemAdapter.AdapterListener() {
             @Override
             public void onClick(String itemId) {
                 Intent intent = new Intent(ItemsActivity.this, ItemDetailsActivity.class);
@@ -67,15 +82,6 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
         recyclerView.setAdapter(adapter);
-
-        addItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ItemsActivity.this, AddItemActivity.class);
-                intent.putExtra("grocery_id", groceryId);
-                startActivity(intent);
-            }
-        });
     }
 
     // TODO addItem

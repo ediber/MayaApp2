@@ -13,9 +13,11 @@ public class DAO {
     private Context context;
     private long groceryId = 0;
     private Contact myContact;
+    private FireBaseHelper fBHelper = new FireBaseHelper();
 
     // static variable single_instance of type Singleton
     private static DAO single_instance = null;
+    //private HasGroceriesListener groceriesListener;
 
     private DAO(Context context) {
         this.context = context;
@@ -35,63 +37,92 @@ public class DAO {
 
 
     //return the grocery list name
-    public List<NameIdPair> getGroceryPairs() {
-        List<Grocery> myUserGroceries = getMyUserGroceries();
+    public void getGroceryPairs(final HasGroceriesListener groceriesListener) {
 
-        List<NameIdPair> pairs = new ArrayList<>();
-        for (Grocery grocery : myUserGroceries) {
-            pairs.add(new NameIdPair(grocery.getName(),grocery.getId()));
-        }
+        fBHelper.getGroceriesFromFB(new FireBaseHelper.HasGroceryListener() {
+            @Override
+            public void hasGroceries(final List<Grocery> groceries) {
+                final List<Grocery> myUserGroceries = new ArrayList<>();
 
-        return pairs;
-    }
+                fBHelper.getGrocery_contactFromFB(new FireBaseHelper.HasGrocery_contactListener() {
+                    @Override
+                    public void hasGrocery_contact(List<Grocery_Contact> grocery_contacts) {
+                        for (Grocery grocery : groceries) {
+                            if(belongsToUser(myContact, grocery, grocery_contacts)){
+                                myUserGroceries.add(grocery);
+                            }
+                        }
 
- // find which groceries belongs to my user.
-    private List<Grocery> getMyUserGroceries() {
-        List<Grocery> groceries = container.getGroceries();
-        List<Grocery> myUserGroceries = new ArrayList<>();
-        for (Grocery grocery : groceries) {
-            if(belongsToUser(myContact, grocery)){
-                myUserGroceries.add(grocery);
+                        List<NameIdPair> pairs = new ArrayList<>();
+                        for (Grocery grocery : myUserGroceries) {
+                            pairs.add(new NameIdPair(grocery.getName(),grocery.getId()));
+                        }
+
+                        groceriesListener.hasPairs(pairs);
+                    }
+                });
+
+
+
             }
-        }
-        return myUserGroceries;
+        });
+
+
+
     }
 
-    // find if a specific grocery belong to my user
-    private boolean belongsToUser(Contact myContact, Grocery grocery) {
-        List<Grocery_Contact> grocery_contacts = container.getGrocery_contact();
+
+
+    private boolean belongsToUser(final Contact myContact, final Grocery grocery, List<Grocery_Contact> grocery_contacts) {
+
+        final boolean[] belongs = {false};
+
         for (Grocery_Contact grocery_contact : grocery_contacts) {
             if(grocery_contact.getGroceryId().equals(grocery.getId()) &&
                     grocery_contact.getContactPhone().equals(myContact.getPhoneNumber())){
-                return true;
+                belongs[0] = true;
             }
         }
-        return false;
+
+        return belongs[0];
     }
 
 
     // return all items of a specific list
-    public List<Item> getItems(String id) {
-        List<Grocery> myUserGroceries = getMyUserGroceries();
-        for (Grocery grocery: myUserGroceries) {
-            if(grocery.getId().equals(id)){
-               return grocery.getItems();
+    public void getItems(final String id, final HasItemsListener listener) {
+        fBHelper.getGroceriesFromFB(new FireBaseHelper.HasGroceryListener() {
+            @Override
+            public void hasGroceries(List<Grocery> groceries) {
+                for (Grocery grocery: groceries) {
+                    if(grocery.getId().equals(id)){
+                        listener.hasItems(grocery.getItems());
+                    }
+                }
             }
-        }
-        return null;
+        });
+
     }
 
     // add a new shopping list
-    public void addGrocery(String groceryName, List<LocalContact> localContacts) {
-        List<Contact> contacts = localToGeneral(localContacts);
-        Grocery grocery = new Grocery(groceryName);
-        contacts.add(myContact);
-        List<Contact> dBContacts = container.getContacts();
-        insetIfNotExist(dBContacts, contacts);
-        container.setContacts(dBContacts);
-        container.addGrocery(grocery);
-        addGroceryContact(contacts, grocery);
+    public void addGrocery(String groceryName, final List<LocalContact> localContacts) {
+        final List<Contact> newContacts = localToGeneral(localContacts);
+        final Grocery grocery = new Grocery(groceryName);
+        newContacts.add(myContact);
+
+      //  container.insertNewContacts(contacts);
+        //fBHelper.insertNewContacts(contacts);
+        fBHelper.getContactsFromFB(new FireBaseHelper.HasContactListener() {
+            @Override
+            public void hasContacts(List<Contact> fbContacts) {
+                List<Contact> unExistContacts = insetContactIfNotExist(newContacts, fbContacts);
+                fBHelper.addContactsToFB(unExistContacts);
+
+                fBHelper.addGrocery(grocery);
+                addGroceryContact(newContacts, grocery);
+            }
+        });
+
+
     }
 
      // change a local contact to contact.
@@ -104,25 +135,10 @@ public class DAO {
     }
 
 
-     //adding a user to dbContact if not exist.
-    private void insetIfNotExist(List<Contact> dBContacts, List<Contact> contacts) {
-        for (Contact newContact : contacts) {
-            boolean exist = false;
-            for (Contact dbContact : dBContacts) {
-                if(dbContact.getPhoneNumber().equals(newContact.getPhoneNumber())){
-                    exist = true;
-                }
-            }
-            if(exist){
-                dBContacts.add(newContact);
-            }
-        }
-    }
-
     // insert to Grocery_Contact list.
     private void addGroceryContact(List<Contact> contacts, Grocery grocery) {
         for (Contact contact : contacts) {
-            container.addGroceryContact(grocery.getId(), contact.getPhoneNumber());
+            fBHelper.addGroceryContact(grocery.getId(), contact.getPhoneNumber());
         }
     }
 
@@ -161,5 +177,33 @@ public class DAO {
             }
         }
         return null;
+    }
+
+    //adding a user to dbContact if not exist.
+    private List<Contact> insetContactIfNotExist(List<Contact> myContacts, List<Contact> fbContacts) {
+
+        List<Contact> newContacts = new ArrayList<>();
+        for (Contact myContact : myContacts) {
+            boolean exist = false;
+            for (Contact fbContact : fbContacts) {
+                if (myContact.getPhoneNumber().equals(fbContact.getPhoneNumber())) {
+                    exist = true;
+                }
+            }
+            if (!exist) {
+                newContacts.add(myContact);
+            }
+        }
+        return newContacts;
+    }
+
+
+    public interface HasGroceriesListener{
+        void hasGroceries(List<Grocery> groceries);
+        void hasPairs(List<NameIdPair> pairs);
+    }
+
+    public interface HasItemsListener{
+        void hasItems(List<Item> items);
     }
 }

@@ -45,4 +45,23 @@ public class Container {
     public void addGroceryContact(String groceryId, String phoneNumber) {
         grocery_contact.add(new Grocery_Contact(groceryId, phoneNumber));
     }
+
+    public void insertNewContacts(List<Contact> contacts) {
+        insetContactIfNotExist(this.contacts, contacts);
+    }
+
+    //adding a user to dbContact if not exist.
+    private void insetContactIfNotExist(List<Contact> dBContacts, List<Contact> contacts) {
+        for (Contact newContact : contacts) {
+            boolean exist = false;
+            for (Contact dbContact : dBContacts) {
+                if(dbContact.getPhoneNumber().equals(newContact.getPhoneNumber())){
+                    exist = true;
+                }
+            }
+            if(! exist){
+                dBContacts.add(newContact);
+            }
+        }
+    }
 }

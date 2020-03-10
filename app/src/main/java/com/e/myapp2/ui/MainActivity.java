@@ -12,6 +12,7 @@ import android.view.Window;
 
 import com.e.myapp2.adapters.GroceriesAdapter;
 import com.e.myapp2.data.DAO;
+import com.e.myapp2.data.Grocery;
 import com.e.myapp2.data.NameIdPair;
 import com.e.myapp2.R;
 
@@ -36,24 +37,21 @@ public class MainActivity extends AppCompatActivity {
         addGrocery =  findViewById(R.id.add_grocery_button);
 
         dao = DAO.getInstance(getApplicationContext());
-        groceries = dao.getGroceryPairs();
-
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_grocery);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        adapter = new GroceriesAdapter(groceries, new GroceriesAdapter.GroceryListener() {
+        dao.getGroceryPairs(new DAO.HasGroceriesListener() {
             @Override
-            public void onGroceryClicked(String id) {
-                Intent myIntent = new Intent(MainActivity.this, ItemsActivity.class);
-                myIntent.putExtra("grocery_id", id);
-                startActivity(myIntent);
+            public void hasGroceries(List<Grocery> groceries) {
+
+            }
+
+            @Override
+            public void hasPairs(List<NameIdPair> pairs) {
+                generateRecyclerView(pairs);
             }
         });
 
 
-        recyclerView.setAdapter(adapter);
+
+
 
         addGrocery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +62,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    private void generateRecyclerView(List<NameIdPair> pairs) {
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view_grocery);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        adapter = new GroceriesAdapter(pairs, new GroceriesAdapter.GroceryListener() {
+            @Override
+            public void onGroceryClicked(String id) {
+                Intent myIntent = new Intent(MainActivity.this, ItemsActivity.class);
+                myIntent.putExtra("grocery_id", id);
+                startActivity(myIntent);
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
 
     }
 }

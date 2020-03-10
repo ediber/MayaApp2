@@ -19,6 +19,12 @@ public class Grocery {
 
     }
 
+    public Grocery(String name, String id) {
+        this.name = name;
+        this.id = id;
+        items = new ArrayList<>();
+    }
+
     public List<Item> getItems() {
         return items;
     }
